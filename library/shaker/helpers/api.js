@@ -1,6 +1,6 @@
 /* globals fetch, XMLHttpRequest */
 
-const API_URL = 'http://localhost:3500'
+const API_URL = 'https://api.useshaker.com'
 
 export const checkIfExists = async ({ projectId }) => {
   return fetch(`${API_URL}/projects/${projectId}/exists`).then(res => res.json())

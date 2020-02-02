@@ -98,6 +98,8 @@ export default function Shaker (Component, params = {}) {
 
     const capture = useMemo(() => {
       return async () => {
+        if (openFeedbacker === true) return void (0)
+
         const uri = await captureScreen({
           format: 'jpg',
           quality: 0.8
@@ -106,17 +108,17 @@ export default function Shaker (Component, params = {}) {
         setCaptureUri(uri)
         setOpenFeedbacker(true)
       }
-    }, [setCaptureUri])
+    }, [openFeedbacker, setCaptureUri])
 
     useEffect(() => {
       if (detectShakeFn) {
-        detectShakeFn({ 
-          shakeTimes, 
-          capture 
+        detectShakeFn({
+          shakeTimes,
+          capture
         })
       }
     }, [capture])
-    
+
     const save = useMemo(() => {
       return async () => {
         try {
@@ -165,7 +167,7 @@ export default function Shaker (Component, params = {}) {
           setCaptureUri(null)
           setOpenFeedbacker(false)
           setProgress(null)
-          
+
         } catch (err) {
           alert('Something went wrong. Try again.')
           setProgress(null)
@@ -255,7 +257,7 @@ export default function Shaker (Component, params = {}) {
               style={{ flex: 1 }}
               onPress={e => {
                 if (progress !== null) return void (0)
-                
+
                 const uid = uuid()
                 const { pageX, pageY } = e.nativeEvent
                 setFeedback([...feedbacks, { pageX, pageY, text: '', uid }])
