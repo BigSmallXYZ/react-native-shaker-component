@@ -258,7 +258,7 @@ export default function Shaker (Component, params = {}) {
               activeOpacity={1}
               style={{ flex: 1 }}
               onPress={e => {
-                if (setProgress !== null) return void (0)
+                if (progress !== null) return void (0)
                 
                 const uid = uuid()
                 const { pageX, pageY } = e.nativeEvent
