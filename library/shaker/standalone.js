@@ -13,7 +13,6 @@ import Progress from './components/progress'
 import {
   Keyboard,
   Platform,
-  Button,
   View,
   TouchableOpacity,
   Alert,
@@ -224,9 +223,6 @@ export default function Shaker (Component, params = {}) {
     return (
       <>
         <Component />
-        <View style={{ position: 'absolute', bottom: 30, right: 30 }}>
-          <Button onPress={capture} title='TakeAShot' />
-        </View>
         {openFeedbacker && (
           <View
             style={{
