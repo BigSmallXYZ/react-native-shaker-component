@@ -5,10 +5,11 @@ import style from './style'
 import { View } from 'react-native-animatable'
 import { Text } from 'react-native'
 
-export default function Warn ({ title, text, show = true }) {
+export default function Warn ({ title, text, onAnimationEnd, show = true }) {
   return (
     <View
       animation={show ? 'slideInUp' : 'slideOutDown'}
+      onAnimationEnd={onAnimationEnd}
       duration={500}
       style={style.container}
     >

@@ -67,7 +67,11 @@ export default function Shaker (Component, params = {}) {
 
     useEffect(() => {
       const fnShow = e => {
-        setKeyboardPosition(e.endCoordinates.height - 25)
+        if (Platform.OS === 'android') {
+          setKeyboardPosition(-25)
+        } else {
+          setKeyboardPosition(e.endCoordinates.height - 25)
+        }
       }
 
       const fnHide = () => {
@@ -76,12 +80,13 @@ export default function Shaker (Component, params = {}) {
 
       Keyboard.addListener('keyboardDidShow', fnShow)
       Keyboard.addListener('keyboardWillShow', fnShow)
+      Keyboard.addListener('keyboardDidHide', fnHide)
       Keyboard.addListener('keyboardWillHide', fnHide)
 
       return () => {
         Keyboard.removeListener('keyboardDidShow', fnShow)
-        Keyboard.removeListener('keyboardDidHide', fnHide)
         Keyboard.removeListener('keyboardWillShow', fnShow)
+        Keyboard.removeListener('keyboardDidHide', fnHide)
         Keyboard.removeListener('keyboardWillHide', fnHide)
       }
     }, [setKeyboardPosition])
@@ -286,7 +291,14 @@ export default function Shaker (Component, params = {}) {
             )}
           </View>
         )}
-        {displayFeedbackWarn && warnVisible !== 0 && <Warn show={warnVisible === 1} title='Want to give any feedback?' text={`Shake ${shakeTimes}x your phone and start giving feedback`} />}
+        {displayFeedbackWarn && warnVisible !== 0 && (
+          <Warn 
+            show={warnVisible === 1} 
+            onAnimationEnd={() => warnVisible === 2 && setVisibility(0)}
+            title='Want to give any feedback?' 
+            text={`Shake ${shakeTimes}x your phone and start giving feedback`} 
+          />
+        )}
       </>
     )
   }
