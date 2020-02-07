@@ -131,7 +131,7 @@ export default function Shaker (Component, params = {}) {
           setActiveFeedback(null)
           const filename = `${uuid()}.jpg`
           setProgress(10)
-          const { url: signedUrl } = await api.getSignedUrl({
+          const { url: signedUrl, headers } = await api.getSignedUrl({
             filename,
             contentType: 'image/jpeg'
           })
@@ -140,6 +140,7 @@ export default function Shaker (Component, params = {}) {
           // UPLOAD IMAGE
           const { url } = await api.uploadToS3({
             signedUrl,
+            headers,
             uri: captureUri,
             filename
           })
@@ -292,11 +293,11 @@ export default function Shaker (Component, params = {}) {
           </View>
         )}
         {displayFeedbackWarn && warnVisible !== 0 && (
-          <Warn 
-            show={warnVisible === 1} 
+          <Warn
+            show={warnVisible === 1}
             onAnimationEnd={() => warnVisible === 2 && setVisibility(0)}
-            title='Want to give any feedback?' 
-            text={`Shake ${shakeTimes}x your phone and start giving feedback`} 
+            title='Want to give any feedback?'
+            text={`Shake ${shakeTimes}x your phone and start giving feedback`}
           />
         )}
       </>

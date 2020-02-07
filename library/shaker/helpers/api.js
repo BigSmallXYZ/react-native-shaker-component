@@ -19,14 +19,12 @@ export const getSignedUrl = async ({ projectId, ...restData }) => {
   })
 }
 
-export const uploadToS3 = ({ signedUrl, uri, mime = 'image/jpeg', filename }) => {
+export const uploadToS3 = ({ signedUrl, uri, mime = 'image/jpeg', headers, filename }) => {
   return new Promise(function (resolve, reject) {
     const xhr = new XMLHttpRequest()
     xhr.open('PUT', signedUrl)
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        console.log(xhr)
-        console.log(xhr.response)
         if (xhr.status === 200) {
           resolve({ url: signedUrl.split('?')[0] })
         } else {
@@ -35,13 +33,17 @@ export const uploadToS3 = ({ signedUrl, uri, mime = 'image/jpeg', filename }) =>
       }
     }
     xhr.setRequestHeader('Content-Type', mime)
-    xhr.setRequestHeader('x-amz-acl', 'public-read')
+
+    Object.keys(headers).forEach(key => {
+      xhr.setRequestHeader(key, headers[key])
+    })
+
     xhr.send({ uri, type: mime, name: filename })
   })
 }
 
 export const saveFeedback = async ({ projectId, ...restData }) => {
-  return fetch(`${API_URL}/feedbacks/${projectId}`, {
+  return fetch(`${API_URL}/feedback/${projectId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
