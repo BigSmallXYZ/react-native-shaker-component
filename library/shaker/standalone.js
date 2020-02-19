@@ -19,8 +19,6 @@ import {
   Dimensions
 } from 'react-native'
 
-import { captureScreen } from 'react-native-view-shot'
-
 import * as api from './helpers/api'
 
 import { View as RNAView } from 'react-native-animatable'
@@ -35,7 +33,8 @@ export default function Shaker (Component, params = {}) {
     displayFeedbackWarn = true,
     shakeTimes = 1,
     projectId,
-    detectShakeFn
+    detectShakeFn,
+    takeScreenshot: captureScreen
   } = params
 
   if (!enabled) return Component
@@ -105,10 +104,7 @@ export default function Shaker (Component, params = {}) {
       return async () => {
         if (openFeedbacker === true) return void (0)
 
-        const uri = await captureScreen({
-          format: 'jpg',
-          quality: 0.8
-        })
+        const uri = await captureScreen()
 
         setCaptureUri(uri)
         setOpenFeedbacker(true)
