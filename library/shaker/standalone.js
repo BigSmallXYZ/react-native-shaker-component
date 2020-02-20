@@ -41,7 +41,7 @@ export default function Shaker (Component, params = {}) {
 
   return function ShakerElement () {
     const [warnVisible, setVisibility] = useState(0)
-    const [captureUri, setCaptureUri] = useState(null)
+    const [capturedInfo, setCapturedInfo] = useState({})
     const [openFeedbacker, setOpenFeedbacker] = useState(false)
     const [feedbacks, setFeedback] = useState([])
     const [activeFeedback, setActiveFeedback] = useState(null)
@@ -104,12 +104,12 @@ export default function Shaker (Component, params = {}) {
       return async () => {
         if (openFeedbacker === true) return void (0)
 
-        const uri = await captureScreen()
+        const info = await captureScreen()
 
-        setCaptureUri(uri)
+        setCapturedInfo(info)
         setOpenFeedbacker(true)
       }
-    }, [openFeedbacker, setCaptureUri])
+    }, [openFeedbacker, setCapturedInfo])
 
     useEffect(() => {
       if (detectShakeFn) {
@@ -137,7 +137,7 @@ export default function Shaker (Component, params = {}) {
           const { url } = await api.uploadToS3({
             signedUrl,
             headers,
-            uri: captureUri,
+            uri: capturedInfo.uri,
             filename
           })
           setProgress(66)
@@ -147,12 +147,16 @@ export default function Shaker (Component, params = {}) {
             sessionName,
             projectId,
             screenshot: url,
+            positionScreenX: capturedInfo.positionScreenX,
+            positionScreenY: capturedInfo.positionScreenY,
             feedbacks,
             phoneInfo: {
               dimensions: Dimensions.get('screen'),
               platform: {
                 os: Platform.OS,
                 version: Platform.Version,
+                manufacturer: capturedInfo.manufacturer,
+                model: capturedInfo.model,
                 isIpad: Platform.isPad,
                 isTV: Platform.isTV,
                 isTVOS: Platform.isTVOS
@@ -166,7 +170,7 @@ export default function Shaker (Component, params = {}) {
 
           setActiveFeedback(null)
           setFeedback([])
-          setCaptureUri(null)
+          setCapturedInfo(null)
           setOpenFeedbacker(false)
           setProgress(null)
 
@@ -178,10 +182,10 @@ export default function Shaker (Component, params = {}) {
     }, [
       setActiveFeedback,
       setFeedback,
-      setCaptureUri,
+      setCapturedInfo,
       setOpenFeedbacker,
       setProgress,
-      captureUri,
+      capturedInfo,
       projectId,
       feedbacks
     ])
@@ -199,7 +203,7 @@ export default function Shaker (Component, params = {}) {
                 onPress: () => {
                   setActiveFeedback(null)
                   setFeedback([])
-                  setCaptureUri(null)
+                  setCapturedInfo(null)
                   setOpenFeedbacker(false)
                 },
                 style: 'cancel'
