@@ -8,7 +8,7 @@ export default StyleSheet.create({
     left: 10,
     backgroundColor: '#f1c40f',
     padding: 10,
-    borderRadius: 4,
+    // borderRadius: 4,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

@@ -10,14 +10,20 @@ import CircularButton from '../CircularButton'
 const style = {
   container: {
     borderRadius: 30,
+    overflow: 'hidden',
     backgroundColor: '#F6F6F9',
-    // flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 50
+  },
+
+  inside: {
+    backgroundColor: '#F6F6F9',
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     // marginHorizontal: 20,
-    minHeight: 50,
     padding: 10
-    // marginTop: 70
   },
 
   input: {
@@ -55,14 +61,16 @@ export default function TextBox ({ value, disabled, onChangeText, onSubmit }) {
     <View
       style={style.container}
     >
-      <Input
-        value={value}
-        onChangeText={onChangeText}
-      />
-      <SendButton
-        disabled={disabled}
-        onPress={onSubmit}
-      />
+      <View style={style.inside}>
+        <Input
+          value={value}
+          onChangeText={onChangeText}
+        />
+        <SendButton
+          disabled={disabled}
+          onPress={onSubmit}
+        />
+      </View>
     </View>
   )
 }

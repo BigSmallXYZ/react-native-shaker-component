@@ -16,7 +16,8 @@ import {
   View,
   TouchableOpacity,
   Alert,
-  Dimensions
+  Dimensions,
+  Button
 } from 'react-native'
 
 import * as api from './helpers/api'
